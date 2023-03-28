@@ -38,6 +38,7 @@ bash
 Anti-Virus Service
 To scan a file, send a POST request to /api/scan with the file as a form-data payload. The API will return either "clean" or "detected" based on the presence of malicious words in the file.
 Implementation Details
+
 The project uses Django for both services. The Configuration service provides an API to update and retrieve the list of malicious words. The Anti-Virus service fetches the malicious words from the Configuration service every 60 seconds using Celery, updating Redis if there is a version difference. The file scanning API in the Anti-Virus service checks for the presence of malicious words fetched from Redis.
 
 When scanning a file, the words will be accessed and scanned accordingly. If a malicious word is found in the file, the API returns "detected", otherwise it returns "clean".
