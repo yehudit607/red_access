@@ -3,11 +3,13 @@
 
 This project is composed of two Django services: a Configuration service and an Anti-Virus service. The Configuration service allows for updating and retrieving a list of malicious words, while the Anti-Virus service scans files for the presence of these malicious words. The Anti-Virus service uses Celery to fetch the malicious words every 60 seconds from the Configuration service and updates Redis accordingly, along with the version number.
 
-Requirements
+Requirements:
+
 Docker
 Docker Compose
 
 Getting Started:
+
 Clone the repository:
 git clone https://github.com/yehudit607/red_access.git
 Change directory to the project root:
