@@ -3,3 +3,4 @@ djangorestframework==3.12.1
 djangorestframework-simplejwt==4.6.0
 celery==5.2.2
 requests
+redis
