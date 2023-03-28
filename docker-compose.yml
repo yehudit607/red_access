@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypass
+      POSTGRES_DB: mydb
+      DATABASE_URL: postgres://myuser:mypass@db:5432/mydb
+    volumes:
+      - config_postgres-data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+
+  config_service:
+    build: ./redaccess_service
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      PORT: 8000
+      DJANGO_SETTINGS_MODULE: ConfigService.settings
+      DJANGO_SECRET_KEY: your_django_secret_key
+      DJANGO_ALLOWED_HOSTS: "*"
+      DATABASE_URL: postgres://myuser:mypass@db:5432/mydb
+    volumes:
+      - ./redaccess_service:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  anti_virus_service:
+    build: ./antivirus
+    command: python manage.py runserver 0.0.0.0:8001
+    environment:
+      PORT: 8001
+      DJANGO_SETTINGS_MODULE: antivirus.settings
+      DJANGO_SECRET_KEY: your_django_secret_key
+      DJANGO_ALLOWED_HOSTS: "*"
+      DATABASE_URL: postgres://myuser:mypass@db:5432/mydb
+    volumes:
+      - ./antivirus:/app
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+
+volumes:
+  config_postgres-data:
